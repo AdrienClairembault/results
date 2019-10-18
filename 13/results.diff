@@ -1,0 +1,68 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 552612b..b09d72d 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -100,6 +100,11 @@
+                     <default_value></default_value>
+                     <is_null_allowed>true</is_null_allowed>
+                 </field>
++                <field id="my_int" xsi:type="AttributeInteger">
++                    <sql>my_int</sql>
++                    <default_value></default_value>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
+             </fields>
+             <lifecycle>
+                 <attribute>status</attribute>
+@@ -167,7 +172,28 @@
+                     </state>
+                 </states>
+             </lifecycle>
+-            <methods></methods>
++            <methods>
++                <method id="GetAttributeFlags">
++                    <static>false</static>
++                    <access>public</access>
++                    <type>Overload-DBObject</type>
++                    <code>
++                        <![CDATA[
++                            public function GetAttributeFlags(
++                                $sAttCode,
++                                &$aReasons = array(),
++                                $sTargetState = ''
++                            ){
++                                if ($sAttCode == "my_int" && $this->Get('my_int') > 5) {
++                                    return OPT_ATT_HIDDEN;
++                                }
++
++                                return parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState);
++                            }
++                        ]]>
++                    </code>
++                </method>
++            </methods>
+             <presentation>
+                 <details>
+                     <items>
+@@ -201,6 +227,9 @@
+                         <item id="close_date">
+                             <rank>90</rank>
+                         </item>
++                        <item id="my_int">
++                            <rank>100</rank>
++                        </item>
+                         <item id="pc_list">
+                             <rank>1000</rank>
+                         </item>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index a830c6f..ed4d80c 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -29,6 +29,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Class:MyObject/Attribute:pc_list' => "PC(s)",
+ 	'Class:MyObject/Attribute:server_list' => "Serveur(s)",
+ 	'Class:MyObject/Attribute:close_date' => "Date de clôture",
++	'Class:MyObject/Attribute:my_int' => "Entier",
+ 	'Class:MyObject/Stimulus:ev_validated' => "Valider",
+ 	'Class:MyObject/Stimulus:ev_closed' => "Fermer",
+ ));

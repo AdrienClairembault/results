@@ -1,0 +1,20 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index e1e4040..2b4d5ac 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -227,6 +227,15 @@
+                         <![CDATA[
+                             public function OnInsert() {
+                                 $this->SetCurrentDate('last_update');
++
++                                $product = new Product();
++                                $product->Set('name', $this->Get('name'));
++                                $product->Set('org_id', 1);
++                                $product->Set('productfamily_id', 1);
++                                $product->Set('status', 'production');
++                                $product->DBInsert();
++
++                                $this->Set('product_id', $product->GetKey());
+                             }
+                         ]]>
+                     </code>

@@ -1,0 +1,20 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 2b4d5ac..9a61960 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -255,6 +255,15 @@
+                                         $this->Get('nb_modification_description') + 1
+                                     );
+                                 }
++
++                                if (isset($this->ListChanges()['name'])) {
++                                    $product = Metamodel::GetObject('Product', $this->Get('product_id'), false);
++
++                                    if ($product) {
++                                        $product->Set('name', $this->Get('name'));
++                                        $product->DBUpdate();
++                                    }
++                                }
+                             }
+                         ]]>
+                     </code>

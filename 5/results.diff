@@ -1,0 +1,55 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 170f3b5..18e3787 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -25,6 +25,21 @@
+                     <default_value></default_value>
+                     <is_null_allowed>false</is_null_allowed>
+                 </field>
++                <field id="email" xsi:type="AttributeEmailAddress">
++                    <sql>email</sql>
++                    <default_value></default_value>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
++                <field id="description" xsi:type="AttributeHTML">
++                    <sql>description</sql>
++                    <default_value></default_value>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
++                <field id="phone" xsi:type="AttributePhoneNumber">
++                    <sql>phone</sql>
++                    <default_value></default_value>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
+             </fields>
+             <methods></methods>
+             <presentation>
+@@ -33,6 +48,15 @@
+                         <item id="name">
+                             <rank>0</rank>
+                         </item>
++                        <item id="email">
++                            <rank>10</rank>
++                        </item>
++                        <item id="description">
++                            <rank>20</rank>
++                        </item>
++                        <item id="phone">
++                            <rank>30</rank>
++                        </item>
+                     </items>
+                 </details>
+             </presentation>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index ed3a444..3e7fa3f 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -11,5 +11,8 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Menu:my_menu' => "Mon menu",
+ 	'Class:MyObject' => "Mon objet",
+ 	'Class:MyObject/Attribute:name' => "Nom",
++	'Class:MyObject/Attribute:email' => "Email",
++	'Class:MyObject/Attribute:description' => "Description",
++	'Class:MyObject/Attribute:phone' => "Téléphone",
+ ));
+ ?>

@@ -1,0 +1,55 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 18e3787..9eb9d83 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -40,6 +40,21 @@
+                     <default_value></default_value>
+                     <is_null_allowed>true</is_null_allowed>
+                 </field>
++                <field id="my_enum" xsi:type="AttributeEnum">
++                    <values>
++                        <value>a</value>
++                        <value>b</value>
++                        <value>c</value>
++                        <value>d</value>
++                    </values>
++                    <sql>my_enum</sql>
++                    <default_value>a</default_value>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
++                <field id="my_tag" xsi:type="AttributeTagSet">
++                    <sql>my_tag</sql>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
+             </fields>
+             <methods></methods>
+             <presentation>
+@@ -57,6 +72,12 @@
+                         <item id="phone">
+                             <rank>30</rank>
+                         </item>
++                        <item id="my_enum">
++                            <rank>40</rank>
++                        </item>
++                        <item id="my_tag">
++                            <rank>50</rank>
++                        </item>
+                     </items>
+                 </details>
+             </presentation>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index 3e7fa3f..c27dd9d 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -14,5 +14,11 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Class:MyObject/Attribute:email' => "Email",
+ 	'Class:MyObject/Attribute:description' => "Description",
+ 	'Class:MyObject/Attribute:phone' => "Téléphone",
++	'Class:MyObject/Attribute:my_enum' => "Énumération",
++	'Class:MyObject/Attribute:my_enum/Value:a' => "A",
++	'Class:MyObject/Attribute:my_enum/Value:b' => "B",
++	'Class:MyObject/Attribute:my_enum/Value:c' => "C",
++	'Class:MyObject/Attribute:my_enum/Value:d' => "D",
++	'Class:MyObject/Attribute:my_tag' => "Tag",
+ ));
+ ?>

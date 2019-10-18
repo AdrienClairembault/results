@@ -1,0 +1,11 @@
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index 1326f32..6458d81 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -8,5 +8,6 @@
+ 
+ Dict::Add('FR FR', 'French', 'Français', array(
+ 	// Dictionary entries go here
++	'Menu:my_menu' => "My menu"
+ ));
+ ?>

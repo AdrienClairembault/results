@@ -1,0 +1,54 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 1c8a408..ba8ebc9 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -3,6 +3,16 @@
+     <constants>
+     </constants>
+     <classes>
++         <class id="PC">
++            <fields>
++                <field id="my_object_id" _delta="define" xsi:type="AttributeExternalKey">
++                    <sql>my_object_id</sql>
++                    <is_null_allowed>true</is_null_allowed>
++                    <on_target_delete>DEL_AUTO</on_target_delete>
++                    <target_class>MyObject</target_class>
++                </field>
++            </fields>
++        </class>
+         <class id="MyObject" _delta="define">
+             <parent>cmdbAbstractObject</parent>
+             <properties>
+@@ -65,6 +75,11 @@
+                     <extkey_attcode>product_id</extkey_attcode>
+                     <target_attcode>status</target_attcode>
+                 </field>
++                 <field id="pc_list" _delta="define" xsi:type="AttributeLinkedSet">
++                    <linked_class>PC</linked_class>
++                    <ext_key_to_me>my_object_id</ext_key_to_me>
++                    <edit_mode>add_remove</edit_mode>
++                </field>
+             </fields>
+             <methods></methods>
+             <presentation>
+@@ -94,6 +109,9 @@
+                         <item id="product_status">
+                             <rank>70</rank>
+                         </item>
++                        <item id="pc_list">
++                            <rank>1000</rank>
++                        </item>
+                     </items>
+                 </details>
+             </presentation>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index a7faae1..44b9be2 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -22,5 +22,6 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Class:MyObject/Attribute:my_tag' => "Tag",
+ 	'Class:MyObject/Attribute:product_id' => "Produit",
+ 	'Class:MyObject/Attribute:product_status' => "Statut du produit",
++	'Class:MyObject/Attribute:pc_list' => "PC(s)",
+ ));
+ ?>

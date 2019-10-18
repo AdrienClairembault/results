@@ -1,0 +1,66 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 4964939..170f3b5 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -3,12 +3,46 @@
+     <constants>
+     </constants>
+     <classes>
++        <class id="MyObject" _delta="define">
++            <parent>cmdbAbstractObject</parent>
++            <properties>
++                <comment></comment>
++                <category>bizmodel</category>
++                <abstract>false</abstract>
++                <key_type>autoincrement</key_type>
++                <db_table>my_object</db_table>
++                <db_key_field>id</db_key_field>
++                <db_final_class_field>finalclass</db_final_class_field>
++                <reconciliation>
++                    <attributes>
++                        <attribute id="name"></attribute>
++                    </attributes>
++                </reconciliation>
++            </properties>
++            <fields>
++                <field id="name" xsi:type="AttributeString">
++                    <sql>name</sql>
++                    <default_value></default_value>
++                    <is_null_allowed>false</is_null_allowed>
++                </field>
++            </fields>
++            <methods></methods>
++            <presentation>
++                <details>
++                    <items>
++                        <item id="name">
++                            <rank>0</rank>
++                        </item>
++                    </items>
++                </details>
++            </presentation>
++        </class>
+     </classes>
+     <menus>
+         <menu id="my_menu" _delta="define" xsi:type="SearchMenuNode">
+             <rank>500</rank>
+             <parent>RequestManagement</parent>
+-            <class>Product</class>
++            <class>MyObject</class>
+         </menu>
+     </menus>
+     <user_rights>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index 6458d81..ed3a444 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -8,6 +8,8 @@
+ 
+ Dict::Add('FR FR', 'French', 'Français', array(
+ 	// Dictionary entries go here
+-	'Menu:my_menu' => "My menu"
++	'Menu:my_menu' => "Mon menu",
++	'Class:MyObject' => "Mon objet",
++	'Class:MyObject/Attribute:name' => "Nom",
+ ));
+ ?>

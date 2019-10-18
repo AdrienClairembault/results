@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+    <constants>
+    </constants>
+    <classes>
+         <class id="PC">
+            <fields>
+                <field id="my_object_id" _delta="define" xsi:type="AttributeExternalKey">
+                    <sql>my_object_id</sql>
+                    <is_null_allowed>true</is_null_allowed>
+                    <on_target_delete>DEL_AUTO</on_target_delete>
+                    <target_class>MyObject</target_class>
+                </field>
+            </fields>
+        </class>
+        <class id="MyObject" _delta="define">
+            <parent>cmdbAbstractObject</parent>
+            <properties>
+                <comment></comment>
+                <category>bizmodel</category>
+                <abstract>false</abstract>
+                <key_type>autoincrement</key_type>
+                <db_table>my_object</db_table>
+                <db_key_field>id</db_key_field>
+                <db_final_class_field>finalclass</db_final_class_field>
+                <reconciliation>
+                    <attributes>
+                        <attribute id="name"></attribute>
+                    </attributes>
+                </reconciliation>
+            </properties>
+            <fields>
+                <field id="name" xsi:type="AttributeString">
+                    <sql>name</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>false</is_null_allowed>
+                </field>
+                <field id="email" xsi:type="AttributeEmailAddress">
+                    <sql>email</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="description" xsi:type="AttributeHTML">
+                    <sql>description</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="phone" xsi:type="AttributePhoneNumber">
+                    <sql>phone</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="my_enum" xsi:type="AttributeEnum">
+                    <values>
+                        <value>a</value>
+                        <value>b</value>
+                        <value>c</value>
+                        <value>d</value>
+                    </values>
+                    <sql>my_enum</sql>
+                    <default_value>a</default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="status" xsi:type="AttributeEnum">
+                    <values>
+                        <value>new</value>
+                        <value>validated</value>
+                        <value>closed</value>
+                    </values>
+                    <sql>status</sql>
+                    <default_value>new</default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="my_tag" xsi:type="AttributeTagSet">
+                    <sql>my_tag</sql>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="product_id" xsi:type="AttributeExternalKey">
+                    <sql>product_id</sql>
+                    <is_null_allowed>true</is_null_allowed>
+                    <on_target_delete>DEL_AUTO</on_target_delete>
+                    <target_class>Product</target_class>
+                </field>
+                <field id="product_status" xsi:type="AttributeExternalField">
+                    <extkey_attcode>product_id</extkey_attcode>
+                    <target_attcode>status</target_attcode>
+                </field>
+                 <field id="pc_list" _delta="define" xsi:type="AttributeLinkedSet">
+                    <linked_class>PC</linked_class>
+                    <ext_key_to_me>my_object_id</ext_key_to_me>
+                    <edit_mode>add_remove</edit_mode>
+                </field>
+                 <field id="server_list" _delta="define" xsi:type="AttributeLinkedSetIndirect">
+                    <linked_class>LnkMyObjectToServer</linked_class>
+                    <ext_key_to_me>my_object_id</ext_key_to_me>
+                    <ext_key_to_remote>server_id</ext_key_to_remote>
+                </field>
+                <field id="close_date" xsi:type="AttributeDate">
+                    <sql>close_date</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="last_update" xsi:type="AttributeDate">
+                    <sql>last_update</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="my_int" xsi:type="AttributeInteger">
+                    <sql>my_int</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+                <field id="nb_modification_description" xsi:type="AttributeInteger">
+                    <sql>nb_modification_description</sql>
+                    <default_value></default_value>
+                    <is_null_allowed>true</is_null_allowed>
+                </field>
+            </fields>
+            <lifecycle>
+                <attribute>status</attribute>
+                <stimuli>
+                    <stimulus id="ev_validated" xsi:type="StimulusUserAction"></stimulus>
+                    <stimulus id="ev_closed" xsi:type="StimulusUserAction"></stimulus>
+                </stimuli>
+                <states>
+                    <state id="new">
+                        <flags>
+                            <attribute id="description">
+                                <hidden></hidden>
+                            </attribute>
+                        </flags>
+                        <transitions>
+                            <transition>
+                                <stimulus>ev_validated</stimulus>
+                                <target>validated</target>
+                                <flags>
+                                    <attribute id="email">
+                                        <must_prompt></must_prompt>
+                                    </attribute>
+                                </flags>
+                                <actions></actions>
+                            </transition>
+                            <transition>
+                                <stimulus>ev_closed</stimulus>
+                                <target>closed</target>
+                                <flags></flags>
+                                <actions>
+                                    <action>
+                                        <verb>SetCurrentDate</verb>
+                                        <params>
+                                            <param>close_date</param>
+                                        </params>
+                                    </action>
+                                </actions>
+                            </transition>
+                        </transitions>
+                    </state>
+                    <state id="validated">
+                        <flags>
+                        </flags>
+                        <transitions>
+                            <transition>
+                                <stimulus>ev_closed</stimulus>
+                                <target>closed</target>
+                                <flags></flags>
+                                <actions>
+                                    <action>
+                                        <verb>SetCurrentDate</verb>
+                                        <params>
+                                            <param>close_date</param>
+                                        </params>
+                                    </action>
+                                </actions>
+                            </transition>
+                        </transitions>
+                    </state>
+                    <state id="closed">
+                        <flags>
+                        </flags>
+                        <transitions>
+                        </transitions>
+                    </state>
+                </states>
+            </lifecycle>
+            <methods>
+                <method id="GetAttributeFlags">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>Overload-DBObject</type>
+                    <code>
+                        <![CDATA[
+                            public function GetAttributeFlags(
+                                $sAttCode,
+                                &$aReasons = array(),
+                                $sTargetState = ''
+                            ){
+                                if ($sAttCode == "my_int" && $this->Get('my_int') > 5) {
+                                    return OPT_ATT_HIDDEN;
+                                }
+
+                                return parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState);
+                            }
+                        ]]>
+                    </code>
+                </method>
+                <method id="CheckValue">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>Overload-DBObject</type>
+                    <code>
+                        <![CDATA[
+                            public function CheckValue($sAttCode, $value = null) {
+                                if ($sAttCode == "my_int" && $this->Get('my_int') <= 2) {
+                                    return "Le champ 'Entier' doit être supérieur à 2.";
+                                }
+
+                                return parent::CheckValue($sAttCode, $value);
+                            }
+                        ]]>
+                    </code>
+                </method>
+                <method id="OnInsert">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>Overload-DBObject</type>
+                    <code>
+                        <![CDATA[
+                            public function OnInsert() {
+                                $this->SetCurrentDate('last_update');
+
+                                $product = new Product();
+                                $product->Set('name', $this->Get('name'));
+                                $product->Set('org_id', 1);
+                                $product->Set('productfamily_id', 1);
+                                $product->Set('status', 'production');
+                                $product->DBInsert();
+
+                                $this->Set('product_id', $product->GetKey());
+                            }
+                        ]]>
+                    </code>
+                </method>
+                <method id="AfterInsert">
+                        <static>false</static>
+                        <access>public</access>
+                        <type>Overload-DBObject</type>
+                        <code>
+                            <![CDATA[
+                                public function AfterInsert() {
+                                    $query = "SELECT Server WHERE name LIKE 'Serv%'";
+                                    $search = DBObjectSearch::FromOQL($query);
+                                    $set = new DBObjectSet($search);
+
+                                    while ($server = $set->Fetch()) {
+                                        $lnk = Metamodel::NewObject('LnkMyObjectToServer', [
+                                            'my_object_id' => $this->GetKey(),
+                                            'server_id' => $server->GetKey(),
+                                        ]);
+                                        $lnk->DBInsert();
+                                    }
+                                }
+                            ]]>
+                        </code>
+                    </method>
+                <method id="OnUpdate">
+                    <static>false</static>
+                    <access>public</access>
+                    <type>Overload-DBObject</type>
+                    <code>
+                        <![CDATA[
+                            public function OnUpdate() {
+                                $this->SetCurrentDate('last_update');
+
+                                if (isset($this->ListChanges()['description'])) {
+                                    $this->Set(
+                                        'nb_modification_description',
+                                        $this->Get('nb_modification_description') + 1
+                                    );
+                                }
+
+                                if (isset($this->ListChanges()['name'])) {
+                                    $product = Metamodel::GetObject('Product', $this->Get('product_id'), false);
+
+                                    if ($product) {
+                                        $product->Set('name', $this->Get('name'));
+                                        $product->DBUpdate();
+                                    }
+                                }
+                            }
+                        ]]>
+                    </code>
+                </method>
+            </methods>
+            <presentation>
+                <details>
+                    <items>
+                        <item id="name">
+                            <rank>0</rank>
+                        </item>
+                        <item id="email">
+                            <rank>10</rank>
+                        </item>
+                        <item id="description">
+                            <rank>20</rank>
+                        </item>
+                        <item id="phone">
+                            <rank>30</rank>
+                        </item>
+                        <item id="my_enum">
+                            <rank>40</rank>
+                        </item>
+                        <item id="my_tag">
+                            <rank>50</rank>
+                        </item>
+                        <item id="product_id">
+                            <rank>60</rank>
+                        </item>
+                        <item id="product_status">
+                            <rank>70</rank>
+                        </item>
+                        <item id="status">
+                            <rank>80</rank>
+                        </item>
+                        <item id="close_date">
+                            <rank>90</rank>
+                        </item>
+                        <item id="my_int">
+                            <rank>100</rank>
+                        </item>
+                        <item id="last_update">
+                            <rank>110</rank>
+                        </item>
+                        <item id="nb_modification_description">
+                            <rank>10</rank>
+                        </item>
+                        <item id="pc_list">
+                            <rank>1000</rank>
+                        </item>
+                        <item id="server_list">
+                            <rank>1010</rank>
+                        </item>
+                    </items>
+                </details>
+            </presentation>
+        </class>
+        <class id="LnkMyObjectToServer" _delta="define">
+            <parent>cmdbAbstractObject</parent>
+            <properties>
+                <is_link>1</is_link>
+                <comment></comment>
+                <category>bizmodel</category>
+                <abstract>false</abstract>
+                <key_type>autoincrement</key_type>
+                <db_table>lnkmyobjecttoserver</db_table>
+                <db_key_field>id</db_key_field>
+                <db_final_class_field>finalclass</db_final_class_field>
+                <reconciliation>
+                    <attributes>
+                        <attribute id="my_object_id"></attribute>
+                        <attribute id="server_id"></attribute>
+                    </attributes>
+                </reconciliation>
+            </properties>
+            <fields>
+                <field id="my_object_id" xsi:type="AttributeExternalKey">
+                    <sql>my_object_id</sql>
+                    <is_null_allowed>true</is_null_allowed>
+                    <on_target_delete>DEL_AUTO</on_target_delete>
+                    <target_class>MyObject</target_class>
+                </field>
+                <field id="server_id" xsi:type="AttributeExternalKey">
+                    <sql>server_id</sql>
+                    <is_null_allowed>true</is_null_allowed>
+                    <on_target_delete>DEL_AUTO</on_target_delete>
+                    <target_class>Server</target_class>
+                </field>
+            </fields>
+            <methods></methods>
+            <presentation>
+                <details>
+                    <items>
+                        <item id="my_object_id">
+                            <rank>0</rank>
+                        </item>
+                        <item id="server_id">
+                            <rank>10</rank>
+                        </item>
+                    </items>
+                </details>
+                <list>
+                    <items>
+                        <item id="my_object_id">
+                            <rank>0</rank>
+                        </item>
+                        <item id="server_id">
+                            <rank>10</rank>
+                        </item>
+                    </items>
+                </list>
+            </presentation>
+        </class>
+    </classes>
+    <menus>
+        <menu id="my_menu" _delta="define" xsi:type="SearchMenuNode">
+            <rank>500</rank>
+            <parent>RequestManagement</parent>
+            <class>MyObject</class>
+        </menu>
+    </menus>
+    <user_rights>
+        <groups>
+        </groups>
+        <profiles>
+        </profiles>
+    </user_rights>
+</itop_design>

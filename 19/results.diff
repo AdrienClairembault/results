@@ -1,0 +1,33 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 9a61960..58b7616 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -240,6 +240,28 @@
+                         ]]>
+                     </code>
+                 </method>
++                <method id="AfterInsert">
++                        <static>false</static>
++                        <access>public</access>
++                        <type>Overload-DBObject</type>
++                        <code>
++                            <![CDATA[
++                                public function AfterInsert() {
++                                    $query = "SELECT Server WHERE name LIKE 'Serv%'";
++                                    $search = DBObjectSearch::FromOQL($query);
++                                    $set = new DBObjectSet($search);
++
++                                    while ($server = $set->Fetch()) {
++                                        $lnk = Metamodel::NewObject('LnkMyObjectToServer', [
++                                            'my_object_id' => $this->GetKey(),
++                                            'server_id' => $server->GetKey(),
++                                        ]);
++                                        $lnk->DBInsert();
++                                    }
++                                }
++                            ]]>
++                        </code>
++                    </method>
+                 <method id="OnUpdate">
+                     <static>false</static>
+                     <access>public</access>

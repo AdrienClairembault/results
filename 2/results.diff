@@ -1,0 +1,16 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 8b82856..4964939 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -5,6 +5,11 @@
+     <classes>
+     </classes>
+     <menus>
++        <menu id="my_menu" _delta="define" xsi:type="SearchMenuNode">
++            <rank>500</rank>
++            <parent>RequestManagement</parent>
++            <class>Product</class>
++        </menu>
+     </menus>
+     <user_rights>
+         <groups>

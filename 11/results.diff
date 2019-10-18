@@ -1,0 +1,25 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 1c03da8..7639891 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -105,12 +105,19 @@
+                 <states>
+                     <state id="new">
+                         <flags>
++                            <attribute id="description">
++                                <hidden></hidden>
++                            </attribute>
+                         </flags>
+                         <transitions>
+                             <transition>
+                                 <stimulus>ev_validated</stimulus>
+                                 <target>validated</target>
+-                                <flags></flags>
++                                <flags>
++                                    <attribute id="email">
++                                        <must_prompt></must_prompt>
++                                    </attribute>
++                                </flags>
+                                 <actions></actions>
+                             </transition>
+                             <transition>

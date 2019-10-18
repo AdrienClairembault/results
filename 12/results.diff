@@ -1,0 +1,70 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 7639891..552612b 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -95,6 +95,11 @@
+                     <ext_key_to_me>my_object_id</ext_key_to_me>
+                     <ext_key_to_remote>server_id</ext_key_to_remote>
+                 </field>
++                <field id="close_date" xsi:type="AttributeDate">
++                    <sql>close_date</sql>
++                    <default_value></default_value>
++                    <is_null_allowed>true</is_null_allowed>
++                </field>
+             </fields>
+             <lifecycle>
+                 <attribute>status</attribute>
+@@ -124,7 +129,14 @@
+                                 <stimulus>ev_closed</stimulus>
+                                 <target>closed</target>
+                                 <flags></flags>
+-                                <actions></actions>
++                                <actions>
++                                    <action>
++                                        <verb>SetCurrentDate</verb>
++                                        <params>
++                                            <param>close_date</param>
++                                        </params>
++                                    </action>
++                                </actions>
+                             </transition>
+                         </transitions>
+                     </state>
+@@ -136,7 +148,14 @@
+                                 <stimulus>ev_closed</stimulus>
+                                 <target>closed</target>
+                                 <flags></flags>
+-                                <actions></actions>
++                                <actions>
++                                    <action>
++                                        <verb>SetCurrentDate</verb>
++                                        <params>
++                                            <param>close_date</param>
++                                        </params>
++                                    </action>
++                                </actions>
+                             </transition>
+                         </transitions>
+                     </state>
+@@ -179,6 +198,9 @@
+                         <item id="status">
+                             <rank>80</rank>
+                         </item>
++                        <item id="close_date">
++                            <rank>90</rank>
++                        </item>
+                         <item id="pc_list">
+                             <rank>1000</rank>
+                         </item>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index fe7ba74..a830c6f 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -28,6 +28,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Class:MyObject/Attribute:product_status' => "Statut du produit",
+ 	'Class:MyObject/Attribute:pc_list' => "PC(s)",
+ 	'Class:MyObject/Attribute:server_list' => "Serveur(s)",
++	'Class:MyObject/Attribute:close_date' => "Date de clôture",
+ 	'Class:MyObject/Stimulus:ev_validated' => "Valider",
+ 	'Class:MyObject/Stimulus:ev_closed' => "Fermer",
+ ));

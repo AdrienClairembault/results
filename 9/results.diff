@@ -1,0 +1,101 @@
+commit 480ceb16a719fc24198da03df322c2002d595617
+Author: Adrien Clairembault <aclairembault@teclib.com>
+Date:   Thu Oct 17 16:32:14 2019 +0200
+
+    9
+
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index ba8ebc9..49100a0 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -80,6 +80,11 @@
+                     <ext_key_to_me>my_object_id</ext_key_to_me>
+                     <edit_mode>add_remove</edit_mode>
+                 </field>
++                 <field id="server_list" _delta="define" xsi:type="AttributeLinkedSetIndirect">
++                    <linked_class>LnkMyObjectToServer</linked_class>
++                    <ext_key_to_me>my_object_id</ext_key_to_me>
++                    <ext_key_to_remote>server_id</ext_key_to_remote>
++                </field>
+             </fields>
+             <methods></methods>
+             <presentation>
+@@ -112,8 +117,67 @@
+                         <item id="pc_list">
+                             <rank>1000</rank>
+                         </item>
++                        <item id="server_list">
++                            <rank>1010</rank>
++                        </item>
++                    </items>
++                </details>
++            </presentation>
++        </class>
++        <class id="LnkMyObjectToServer" _delta="define">
++            <parent>cmdbAbstractObject</parent>
++            <properties>
++                <is_link>1</is_link>
++                <comment></comment>
++                <category>bizmodel</category>
++                <abstract>false</abstract>
++                <key_type>autoincrement</key_type>
++                <db_table>lnkmyobjecttoserver</db_table>
++                <db_key_field>id</db_key_field>
++                <db_final_class_field>finalclass</db_final_class_field>
++                <reconciliation>
++                    <attributes>
++                        <attribute id="my_object_id"></attribute>
++                        <attribute id="server_id"></attribute>
++                    </attributes>
++                </reconciliation>
++            </properties>
++            <fields>
++                <field id="my_object_id" xsi:type="AttributeExternalKey">
++                    <sql>my_object_id</sql>
++                    <is_null_allowed>true</is_null_allowed>
++                    <on_target_delete>DEL_AUTO</on_target_delete>
++                    <target_class>MyObject</target_class>
++                </field>
++                <field id="server_id" xsi:type="AttributeExternalKey">
++                    <sql>server_id</sql>
++                    <is_null_allowed>true</is_null_allowed>
++                    <on_target_delete>DEL_AUTO</on_target_delete>
++                    <target_class>Server</target_class>
++                </field>
++            </fields>
++            <methods></methods>
++            <presentation>
++                <details>
++                    <items>
++                        <item id="my_object_id">
++                            <rank>0</rank>
++                        </item>
++                        <item id="server_id">
++                            <rank>10</rank>
++                        </item>
+                     </items>
+                 </details>
++                <list>
++                    <items>
++                        <item id="my_object_id">
++                            <rank>0</rank>
++                        </item>
++                        <item id="server_id">
++                            <rank>10</rank>
++                        </item>
++                    </items>
++                </list>
+             </presentation>
+         </class>
+     </classes>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index 44b9be2..ca33154 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -23,5 +23,6 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Class:MyObject/Attribute:product_id' => "Produit",
+ 	'Class:MyObject/Attribute:product_status' => "Statut du produit",
+ 	'Class:MyObject/Attribute:pc_list' => "PC(s)",
++	'Class:MyObject/Attribute:server_list' => "Serveur(s)",
+ ));
+ ?>

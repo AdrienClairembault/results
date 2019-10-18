@@ -1,0 +1,27 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index b09d72d..b0e01d3 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -193,6 +193,22 @@
+                         ]]>
+                     </code>
+                 </method>
++                <method id="CheckValue">
++                    <static>false</static>
++                    <access>public</access>
++                    <type>Overload-DBObject</type>
++                    <code>
++                        <![CDATA[
++                            public function CheckValue($sAttCode, $value = null) {
++                                if ($sAttCode == "my_int" && $this->Get('my_int') <= 2) {
++                                    return "Le champ 'Entier' doit être supérieur à 2.";
++                                }
++
++                                return parent::CheckValue($sAttCode, $value);
++                            }
++                        ]]>
++                    </code>
++                </method>
+             </methods>
+             <presentation>
+                 <details>

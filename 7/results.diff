@@ -1,0 +1,46 @@
+diff --git a/datamodel.sample-module.xml b/datamodel.sample-module.xml
+index 9eb9d83..1c8a408 100644
+--- a/datamodel.sample-module.xml
++++ b/datamodel.sample-module.xml
+@@ -55,6 +55,16 @@
+                     <sql>my_tag</sql>
+                     <is_null_allowed>true</is_null_allowed>
+                 </field>
++                <field id="product_id" xsi:type="AttributeExternalKey">
++                    <sql>product_id</sql>
++                    <is_null_allowed>true</is_null_allowed>
++                    <on_target_delete>DEL_AUTO</on_target_delete>
++                    <target_class>Product</target_class>
++                </field>
++                <field id="product_status" xsi:type="AttributeExternalField">
++                    <extkey_attcode>product_id</extkey_attcode>
++                    <target_attcode>status</target_attcode>
++                </field>
+             </fields>
+             <methods></methods>
+             <presentation>
+@@ -78,6 +88,12 @@
+                         <item id="my_tag">
+                             <rank>50</rank>
+                         </item>
++                        <item id="product_id">
++                            <rank>60</rank>
++                        </item>
++                        <item id="product_status">
++                            <rank>70</rank>
++                        </item>
+                     </items>
+                 </details>
+             </presentation>
+diff --git a/fr.dict.sample-module.php b/fr.dict.sample-module.php
+index c27dd9d..a7faae1 100644
+--- a/fr.dict.sample-module.php
++++ b/fr.dict.sample-module.php
+@@ -20,5 +20,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
+ 	'Class:MyObject/Attribute:my_enum/Value:c' => "C",
+ 	'Class:MyObject/Attribute:my_enum/Value:d' => "D",
+ 	'Class:MyObject/Attribute:my_tag' => "Tag",
++	'Class:MyObject/Attribute:product_id' => "Produit",
++	'Class:MyObject/Attribute:product_status' => "Statut du produit",
+ ));
+ ?>
